@@ -1,0 +1,8 @@
+{
+  "add_new_task": "Add new task",
+  "enter_your_task": "Enter your task",
+  "select_time" : "Select time",
+  "add_task_decription": "Enter task description",
+  "add_task_decription_error": "Please enter task description",
+  "enter_your_task_error": "Please enter your task"
+}

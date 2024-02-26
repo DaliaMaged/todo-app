@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/TodoTheme.dart';
+import 'package:todo_app/homeScreen/AddTaskBottomSheet.dart';
 import 'package:todo_app/homeScreen/TodoListHomeScreen.dart';
 import 'package:todo_app/settings/SettingsScreen.dart';
 
@@ -24,7 +25,11 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showModalBottomSheet(context: context, builder: (context){
+            return AddTaskSheet();
+          });
+        },
         child: Icon(
           Icons.add,
           color: TodoTheme.customWhite,

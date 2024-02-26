@@ -1,0 +1,8 @@
+{
+  "add_new_task": "اضافة مهمة جديدة",
+  "enter_your_task": "ادخل مهمتك الجديدة",
+  "select_time" : "اختر الوقت",
+  "add_task_decription": "اضف الوصف للمهمة",
+  "add_task_decription_error": "يرجي ادخال وصف المهمة",
+  "enter_your_task_error": "يرجي ادخال المهمة"
+}

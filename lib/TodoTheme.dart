@@ -8,6 +8,7 @@ class TodoTheme {
   static Color secDark = Color(0xff060E1E);
   static Color customBlack = Color(0xff141922);
   static Color customGrey = Color(0xffC8C9CB);
+  static Color textGrey = Color(0xffCDCACA);
 static ThemeData todo_light = ThemeData(
   primaryColor: primaryLight,
   scaffoldBackgroundColor: secLight,
@@ -34,7 +35,30 @@ static ThemeData todo_light = ThemeData(
           )
       ),
     ),
+  bottomSheetTheme: BottomSheetThemeData(
+    backgroundColor: customWhite,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(topLeft: Radius.circular(5),topRight: Radius.circular(5))
+    )
+  ),
+  textTheme: TextTheme(
+    titleMedium: TextStyle(
+      color: customBlack,
+      fontSize: 18,
+      fontWeight: FontWeight.bold
+    ),
+    titleLarge: TextStyle(
+      color: customBlack,
+      fontSize: 20,
+  )
+  )
 );
+
+
+
+
+
+
 static ThemeData todo_dark = ThemeData(
   primaryColor: primaryLight,
   scaffoldBackgroundColor: secDark,
@@ -60,6 +84,23 @@ static ThemeData todo_dark = ThemeData(
           width: 4,
         )
     ),
-  )
+  ),
+    bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: customBlack,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(5),topRight: Radius.circular(5))
+        )
+    ),
+    textTheme: TextTheme(
+        titleMedium: TextStyle(
+            color: customWhite,
+            fontSize: 18,
+            fontWeight: FontWeight.bold
+        ),
+        titleLarge: TextStyle(
+            color: customWhite,
+            fontSize: 20,
+        )
+    )
 );
 }
