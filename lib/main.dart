@@ -1,4 +1,6 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +10,10 @@ import 'package:todo_app/homeScreen/TodoListHomeScreen.dart';
 import 'package:todo_app/homeScreen/home_screen.dart';
 import 'package:todo_app/settings/SettingsScreen.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  //await FirebaseFirestore.instance.disableNetwork();
   runApp(ChangeNotifierProvider(create:(context) => AppConfigNotifier() ,
   child: MyApp(),
   ));

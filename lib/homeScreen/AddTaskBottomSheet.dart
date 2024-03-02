@@ -1,9 +1,11 @@
-import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/AppConfigNotifier.dart';
+import 'package:todo_app/FirebaseUtils.dart';
 import 'package:todo_app/TodoTheme.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../Task.dart';
 
 class AddTaskSheet extends StatefulWidget {
   const AddTaskSheet({super.key});
@@ -15,11 +17,11 @@ class AddTaskSheet extends StatefulWidget {
 class _AddTaskSheetState extends State<AddTaskSheet> {
   var selectedDate = DateTime.now();
   final _formKey = GlobalKey<FormState>();
-  var title="";
-  var description="";
+  var title = "";
+  var description = "";
+
   @override
   Widget build(BuildContext context) {
-
     var provider = Provider.of<AppConfigNotifier>(context);
     return Container(
       padding: EdgeInsets.all(16),
@@ -28,50 +30,47 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              "${AppLocalizations
-                  .of(context)
-                  ?.add_new_task}",
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .titleMedium,
+              "${AppLocalizations.of(context)?.add_new_task}",
+              style: Theme.of(context).textTheme.titleMedium,
               textAlign: TextAlign.center,
             ),
             Form(
-              key: _formKey,
+                key: _formKey,
                 child: Column(
                   children: [
                     TextFormField(
-                      onChanged: (text){
+                      onChanged: (text) {
                         title = text;
                       },
-                      validator: (text){
-                        if(text == null || text.isEmpty) return "${AppLocalizations.of(context)?.enter_your_task_error}"; else return null;
+                      validator: (text) {
+                        if (text == null || text.isEmpty)
+                          return "${AppLocalizations.of(context)?.enter_your_task_error}";
+                        else
+                          return null;
                       },
                       decoration: InputDecoration(
-                          hintText: AppLocalizations
-                              .of(context)
-                              ?.enter_your_task,
-                          hintStyle: Theme
-                              .of(context)
+                          hintText:
+                              AppLocalizations.of(context)?.enter_your_task,
+                          hintStyle: Theme.of(context)
                               .textTheme
                               .titleLarge
                               ?.copyWith(color: TodoTheme.textGrey)),
                     ),
                     TextFormField(
-                      onChanged: (text){
+                      onChanged: (text) {
                         description = text;
                       },
-                      validator: (text){
-                        if(text == null || text.isEmpty) return "${AppLocalizations.of(context)?.add_task_decription_error}"; else return null;
-                      } ,
+                      validator: (text) {
+                        if (text == null || text.isEmpty)
+                          return "${AppLocalizations.of(context)?.add_task_decription_error}";
+                        else
+                          return null;
+                      },
                       maxLines: 4,
                       decoration: InputDecoration(
-                          hintText: AppLocalizations
-                              .of(context)
-                              ?.add_task_decription,
-                          hintStyle: Theme
-                              .of(context)
+                          hintText:
+                              AppLocalizations.of(context)?.add_task_decription,
+                          hintStyle: Theme.of(context)
                               .textTheme
                               .titleLarge
                               ?.copyWith(color: TodoTheme.textGrey)),
@@ -82,15 +81,13 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
               height: 10,
             ),
             Text(
-              "${AppLocalizations
-                  .of(context)
-                  ?.select_time}",
-              style: Theme
-                  .of(context)
+              "${AppLocalizations.of(context)?.select_time}",
+              style: Theme.of(context)
                   .textTheme
                   .titleMedium
                   ?.copyWith(fontWeight: FontWeight.w500),
-            ), SizedBox(
+            ),
+            SizedBox(
               height: 10,
             ),
             InkWell(
@@ -98,28 +95,20 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
               child: Text(
                 "${selectedDate.day} / ${selectedDate.month} / ${selectedDate.year}",
                 textAlign: TextAlign.center,
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .titleLarge
-                    ?.copyWith(
-                  color: TodoTheme.textGrey,
-                ),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: TodoTheme.textGrey,
+                    ),
               ),
             ),
-            ElevatedButton(onPressed: (){
-              addTask();
-            }, child: Text(
-              "${AppLocalizations
-                  .of(context)
-                  ?.add_new_task}",
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .titleMedium,
-              textAlign: TextAlign.center,
-            )
-            )
+            ElevatedButton(
+                onPressed: () {
+                  addTask();
+                },
+                child: Text(
+                  "${AppLocalizations.of(context)?.add_new_task}",
+                  style: Theme.of(context).textTheme.titleMedium,
+                  textAlign: TextAlign.center,
+                ))
           ],
         ),
       ),
@@ -127,20 +116,26 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
   }
 
   showCalender() async {
-   var changeSelectedDate = await showDatePicker(context: context,
+    var changeSelectedDate = await showDatePicker(
+        context: context,
         firstDate: DateTime.now(),
-        initialDate:DateTime.now() ,
+        initialDate: DateTime.now(),
         lastDate: DateTime.now().add(Duration(days: 365)));
-   selectedDate = changeSelectedDate ?? DateTime.now();
-   setState(() {
-
-   });
+    selectedDate = changeSelectedDate ?? DateTime.now();
+    setState(() {});
   }
 
   addTask() {
-    if(_formKey.currentState!.validate()){
-
+    if (_formKey.currentState!.validate()==true) {
+      FirebaseUtils.addTask(Task(
+              title: title, description: description, dateTime: selectedDate))
+          .timeout(Duration(microseconds: 500), onTimeout: () {
+        print("success add task");
+      })
+      .onError((error, stackTrace) => (){
+        print('$stackTrace');
+      })
+      ;
     }
   }
 }
-
